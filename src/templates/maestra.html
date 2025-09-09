@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Sistema de Control de Asistencia{% endblock %}</title>
+
+    {% block css %}{% endblock %}
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/maestra.css') }}">
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Navbar superior -->
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #8A5A44;">
+            <div class="container-fluid">
+                <!-- Botón menú hamburguesa para móviles -->
+                <button class="btn btn-outline-light d-lg-none" id="btnMenuMobile">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+                <!-- Marca -->
+                <a class="navbar-brand" href="/">
+                    <i class="fa-solid fa-users"></i> Control de Asistencia
+                </a>
+
+                <!-- Enlaces a la derecha -->
+                <div class="ms-auto">
+                    <ul class="navbar-nav d-flex gap-3">
+
+                        <!-- Dropdown del usuario -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="usuarioDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{{ url_for('static', filename='images/' + (usuario.foto if usuario.foto else 'default.png')) }}"
+                                    alt="Foto" class="rounded-circle" width="32" height="32">
+                                <span style="padding-left: 10px;">{{ usuario.nombres }}</span>
+
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="usuarioDropdown">
+                                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-user"></i> Editar perfil</a>
+                                </li>
+                                <li> <a class="dropdown-item d-flex align-items-center gap-2" href="#"
+                                        id="cerrarSesionBtn">
+                                        <i class="fa-solid fa-right-from-bracket text-danger"></i> Cerrar sesión
+                                    </a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="d-flex">
+            <!-- Sidebar lateral -->
+            <nav class="sidebar" style="background-color: #D8B49B;">
+                <ul class="nav flex-column">
+                    <!-- Gestión de Personal -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#personalSubmenu">
+                            <i class="fa-solid fa-users"></i> Personal
+                        </a>
+                        <ul class="collapse list-unstyled ms-3" id="personalSubmenu">
+
+                        </ul>
+
+                    </li>
+
+                    <!-- Gestión de Asistencias -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#asistenciasSubmenu">
+                            <i class="fa-solid fa-calendar-check"></i> Asistencias
+                        </a>
+                        <ul class="collapse list-unstyled ms-3" id="asistenciasSubmenu">
+
+                        </ul>
+                    </li>
+
+                    <!-- Reportes -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#reportesSubmenu">
+                            <i class="fa-solid fa-chart-line"></i> Reportes
+                        </a>
+                        <ul class="collapse list-unstyled ms-3" id="reportesSubmenu">
+                            <li><a href="#" class="nav-link">Reporte de ausencias</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Configuración -->
+                    <!-- <li class="nav-item">
+                        <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#configuracionSubmenu">
+                            <i class="fa-solid fa-cogs"></i> Configuración
+                        </a>
+                        <ul class="collapse list-unstyled ms-3" id="configuracionSubmenu">
+                            <li><a href="#" class="nav-link">Configuración de perfil</a></li>
+                            <li><a href="#" class="nav-link">Configuración de horarios</a></li>
+                            <li><a href="#" class="nav-link">Configuración de notificaciones</a></li>
+                        </ul>
+                    </li> -->
+
+                    <!-- Información adicional (Accesos rápidos) -->
+                    <!-- <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa-solid fa-info-circle"></i> Ayuda
+                        </a>
+                    </li> -->
+                </ul>
+            </nav>
+
+            <!-- Contenido principal -->
+            <main class="main-content p-4">
+                <div class="container">
+                    {% block content %}{% endblock %}
+                </div>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        {% block footer %}
+        <footer class="footer py-5" style="background-color: #3d2c1a; color: #fff; border-top: 5px solid #8A5A44;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 text-center text-lg-start mb-3 mb-lg-0">
+                        <p>&copy; 2025 Control de Asistencia. <br>
+                            <span class="font-weight-light">Todos los derechos reservados.</span>
+                        </p>
+                    </div>
+                    <div class="col-lg-6 text-center text-lg-end">
+                        <div class="social-icons">
+                            <a href="#" class="social-icon mx-3" title="Facebook">
+                                <i class="fa-brands fa-facebook fa-2x"></i>
+                            </a>
+                            <a href="#" class="social-icon mx-3" title="Twitter">
+                                <i class="fa-brands fa-twitter fa-2x"></i>
+                            </a>
+                            <a href="#" class="social-icon mx-3" title="Instagram">
+                                <i class="fa-brands fa-instagram fa-2x"></i>
+                            </a>
+                            <a href="#" class="social-icon mx-3" title="LinkedIn">
+                                <i class="fa-brands fa-linkedin fa-2x"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        {% endblock %}
+
+    </div>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('btnMenuMobile').addEventListener('click', function () {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+    </script>
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>
+    <script src="https://unpkg.com/lottie-web/build/player/lottie.min.js"></script>
+    <script>
+        document.getElementById('cerrarSesionBtn').addEventListener('click', function (e) {
+            e.preventDefault(); // evita la navegación directa
+
+            Swal.fire({
+                title: '🔒 ¿Cerrar sesión?',
+                html: `
+                    <p style="font-size: 16px; margin-top: 5px;">
+                        Estás a punto de <strong>cerrar tu sesión</strong> actual.<br>
+                        Si tienes cambios pendientes, asegúrate de guardarlos.
+                    </p>
+                `,
+                icon: 'warning',
+                iconColor: '#e74c3c',
+                showCancelButton: true,
+                cancelButtonText: '❌ Cancelar',
+                confirmButtonText: '✅ Sí, cerrar sesión',
+                confirmButtonColor: '#e74c3c',
+                cancelButtonColor: '#95a5a6',
+                reverseButtons: true,
+                scrollbarPadding: false,
+                heightAuto: false,
+                customClass: {
+                    popup: 'animated fadeIn faster',
+                    confirmButton: 'btn btn-danger px-4',
+                    cancelButton: 'btn btn-outline-secondary px-4'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "{{ url_for('login.logout') }}";
+                }
+            });
+        });
+    </script>
+    <script src="../static/js/maestra.js" defer></script>
+
+</body>
+
+</html>

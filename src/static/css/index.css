@@ -1,0 +1,22 @@
+.card {
+    transition: all 0.3s ease-in-out;
+    height: 400px; /* Establecer una altura fija o máxima */
+    overflow-y: auto; /* Habilitar scroll vertical cuando el contenido exceda la altura */
+}
+
+/* Tarjetas que se desplazan cuando exceden el tamaño */
+.card-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}

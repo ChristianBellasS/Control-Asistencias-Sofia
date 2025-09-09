@@ -1,0 +1,215 @@
+{% extends "maestra.html" %}
+
+{% block titulo %}Inicio - Sistema de Control de Asistencia{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+
+  body {
+    background: linear-gradient(to bottom right, #f2e6d9, #ffffff); /* Colores cálidos suaves */
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+  }
+
+.content-wrapper {
+    max-height: 600px;  /* Establece una altura máxima */
+    overflow-y: auto;  /* Esto permite el desplazamiento cuando el contenido excede la altura */
+}
+
+  .hero {
+    text-align: center;
+    z-index: 2;
+    position: relative;
+    margin-bottom: 40px;
+  }
+
+  .hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #6a4e23; /* Marrón suave */
+    margin-bottom: 1rem;
+    animation: fadeInScale 1s ease forwards;
+  }
+
+  .hero p {
+    font-size: 1.3rem;
+    color: #555;
+    animation: fadeInUp 1.2s ease forwards;
+  }
+
+  @keyframes fadeInScale {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Estilo de tarjetas */
+  .card {
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .card .card-hover {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .card i {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: #6a4e23; /* Marrón suave */
+  }
+
+  .card h6 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  /* Ajuste de nubes y camiones animados */
+  .cloud {
+    position: absolute;
+    background: #b3e5fc;
+    border-radius: 50%;
+    opacity: 0.5;
+    backdrop-filter: blur(2px);
+    animation: floatClouds 40s linear infinite;
+    z-index: 1;
+  }
+
+  .cloud.x1 { width: 200px; height: 60px; top: 40px; left: -250px; animation-delay: 0s; }
+  .cloud.x2 { width: 300px; height: 80px; top: 150px; left: -300px; animation-delay: 5s; }
+  .cloud.x3 { width: 250px; height: 70px; top: 260px; left: -280px; animation-delay: 10s; }
+
+  @keyframes floatClouds {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(160vw); }
+  }
+
+  /* Camioncitos animados */
+  .truck {
+    position: absolute;
+    width: 80px;
+    height: auto;
+    opacity: 0.6;
+    animation: floatTruck 25s linear infinite;
+  }
+
+  .truck.t1 { top: 180px; left: -100px; animation-delay: 3s; }
+  .truck.t2 { top: 350px; left: -150px; animation-delay: 10s; }
+
+  @keyframes floatTruck {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(160vw); }
+  }
+
+  /* Ajustes en los textos */
+  .saludo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 40px;
+  }
+
+  .saludo-box {
+    background: #f1f8ff;
+    border-left: 6px solid #6a4e23;
+    padding: 16px 26px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    max-width: 600px;
+    width: 100%;
+    animation: fadeInDown 1s ease forwards;
+  }
+
+  .saludo-text {
+    font-size: 1.7rem;
+    margin: 0;
+    color: #0d47a1;
+  }
+
+  .fecha-text {
+    font-size: 1rem;
+    color: #555;
+    margin-top: 6px;
+  }
+
+  /* Mejoras en el layout */
+  .row {
+    margin-top: 30px;
+  }
+
+  .col-sm-6, .col-md-4, .col-lg-3 {
+    margin-bottom: 30px;
+  }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+  <!-- 💬 Saludo personalizado -->
+  <div class="saludo-container mb-4 animate__animated animate__fadeInDown">
+    <div class="saludo-box">
+      <h4 class="saludo-text">
+        👋 <span class="fw-bold text-primary">¡Hola, {{ usuario.nombres }}!</span>
+      </h4>
+      <p class="fecha-text fw-bold">📅 {{ fecha_actual }}</p>
+    </div>
+  </div>
+
+  <!-- 🌟 Presentación principal -->
+  <div class="hero mb-5 text-center">
+    <h1 class="fw-bold text-primary">Sistema de Control de Asistencia</h1>
+    <p class="text-muted fs-5">Gestiona y controla las asistencias de tus empleados de manera eficiente.</p>
+  </div>
+
+  <!-- ⚡ Accesos rápidos por rol -->
+  <div class="row g-4 justify-content-center">
+    {% for card in cards %}
+    <div class="col-sm-6 col-md-4 col-lg-3 animate__animated animate__fadeInUpBig">
+      <a href="{{ card.url }}" class="card card-hover shadow text-center py-4 btn btn-light border-0 h-100">
+        <i class="fa-solid {{ card.icon }} fa-2x {{ card.color }} mb-3"></i>
+        <h6 class="fw-bold text-dark m-0">{{ card.text }}</h6>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</div>
+{% endblock %}
+{% block footer %}
+
+{% endblock %}

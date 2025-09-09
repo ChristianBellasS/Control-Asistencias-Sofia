@@ -1,0 +1,248 @@
+/* Reset del body para evitar márgenes y paddings extras */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden; /* Solo oculta el scroll horizontal */
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+}
+
+/* Contenedor principal */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Navbar superior */
+.navbar {
+    background: linear-gradient(135deg, #6A4E23, #8A5A44); /* Degradado suave para el navbar */
+    height: 80px;
+    flex-shrink: 0;
+    border-bottom: 2px solid #C09F77; /* Separación suave */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    border-radius: 0 0 12px 12px; /* Esquinas redondeadas */
+}
+
+.navbar .navbar-brand {
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFF;
+}
+
+/* Navbar */
+.navbar .navbar-nav .nav-link {
+    color: #FFF;
+    font-size: 16px;
+    display: flex;
+    align-items: center; /* Asegura que el ícono y el texto estén alineados */
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.navbar .navbar-nav .nav-link i {
+    margin-right: 8px; /* Ajustamos el margen entre el ícono y el texto */
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #F5E1A4; /* Beige claro */
+    padding: 20px 10px; /* Espaciado más estrecho */
+    width: 230px; /* Ancho más estrecho */
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+    overflow-y: auto;
+    box-shadow: 4px 0px 20px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: all 0.3s ease;
+    border-radius: 12px 0 0 12px; /* Esquinas redondeadas */
+}
+
+/* Mejorar el estilo del sidebar */
+.sidebar .nav-item {
+    margin-bottom: 18px; /* Un poco más de espacio entre los items */
+}
+
+.sidebar .nav-link {
+    font-size: 18px; /* Tamaño de texto adecuado */
+    color: #5D3A21; /* Un tono marrón suave */
+    padding: 12px 18px; /* Padding más compacto */
+    display: flex;
+    align-items: center; /* Alineación vertical de los íconos y texto */
+    border-radius: 8px; /* Esquinas redondeadas */
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s ease, color 0.3s;
+}
+
+/* Iconos */
+.sidebar .nav-link i {
+    margin-right: 10px; /* Menos espacio entre el ícono y el texto */
+    font-size: 20px; /* Aumento de tamaño de los iconos */
+}
+
+/* Efecto hover para los links del sidebar */
+.sidebar .nav-link:hover {
+    background-color: #8A5A44; /* Color más oscuro al hacer hover */
+    color: white; /* Texto blanco */
+    transform: scale(1.05); /* Efecto de escala */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+}
+
+/* Resplandor de los iconos en hover */
+.sidebar .nav-link:hover i {
+    color: #FFB75E; /* Resplandor dorado para los iconos */
+    transform: translateX(5px); /* Movimiento suave para los iconos */
+}
+
+/* Submenú de navegación */
+.sidebar .nav-link[data-bs-toggle="collapse"]:after {
+    content: "▼"; /* Flecha hacia abajo cuando el submenú está cerrado */
+    font-size: 16px;
+    color: #5D3A21;
+    float: right; /* Colocamos la flecha a la derecha */
+    margin-left: 10px; /* Espacio entre el texto y la flecha */
+    transition: transform 0.3s ease; /* Transición suave */
+}
+
+/* Mostrar el ícono de flecha al hacer hover sobre los submenús */
+.sidebar .nav-item:hover .nav-link[data-bs-toggle="collapse"]:after {
+    content: "▲"; /* Flecha hacia arriba al hacer hover */
+    transform: rotate(180deg); /* Rotamos la flecha */
+}
+
+/* Submenú de navegación */
+.sidebar .collapse {
+    display: none; /* El submenú está oculto por defecto */
+}
+
+/* Cuando el submenú está abierto, mostramos los elementos */
+.sidebar .collapse.show {
+    display: block;
+    padding-left: 20px; /* Alineación del submenú con más espacio a la izquierda */
+}
+
+/* Para los links de los submenús */
+.sidebar .collapse .nav-link {
+    font-size: 16px; /* Tamaño de texto para el submenú */
+}
+
+/* Agregar estilos a la selección de un item (active) */
+.sidebar .nav-link.active {
+    background-color: #6A3D24; /* Color más oscuro cuando está activo */
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para resaltar */
+    transition: background-color 0.3s ease;
+}
+
+/* Para el menú móvil */
+@media (max-width: 992px) {
+    .sidebar {
+        position: fixed;
+        top: 80px;
+        left: -250px;
+        z-index: 1050;
+        width: 230px;
+        height: calc(100% - 80px);
+        background-color: #D8B49B;
+        transition: left 0.3s ease-in-out;
+        box-shadow: 2px 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+    }
+}
+
+/* Estilo del contenido principal */
+.main-content {
+    flex: 1;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
+.footer {
+    background-color: #8A5A44;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 12px 12px; /* Esquinas redondeadas */
+}
+
+/* Diseño del dropdown */
+.navbar .dropdown-menu {
+    background-color: #D8B49B;
+}
+
+.navbar .dropdown-item:hover {
+    background-color: #8A5A44;
+    color: #fff;
+}
+
+/* Mejoras de media queries para móviles */
+@media (max-width: 992px) {
+    .sidebar {
+        position: fixed;
+        top: 80px;
+        left: -260px;
+        z-index: 1050;
+        width: 260px;
+        height: calc(100% - 80px);
+        background-color: #D8B49B;
+        transition: left 0.3s ease-in-out;
+        box-shadow: 2px 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .content {
+        flex-direction: column;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+    }
+}
+
+/* Asegurar que las flechas se muestren correctamente */
+.sidebar .nav-link[data-bs-toggle="collapse"]:after {
+    content: "▼";  /* Flecha hacia abajo cuando el submenú está cerrado */
+    font-size: 14px;
+    color: #8A5A44;
+    float: right;
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+/* Cuando el submenú está abierto, mostrar flecha hacia arriba */
+.sidebar .collapse.show + .nav-link:after {
+    content: "▲"; /* Flecha hacia arriba cuando el submenú está abierto */
+    transform: rotate(180deg);
+}
+
+/* Para animación más suave */
+.sidebar .nav-item:hover .nav-link[data-bs-toggle="collapse"]:after {
+    content: "▲"; /* Flecha hacia arriba al hacer hover */
+    transform: rotate(180deg);
+}
+
+/* Agregar estilos a la selección de un item (active) */
+.sidebar .nav-link.active {
+    background-color: #6A3D24; /* Un color aún más oscuro al seleccionar */
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
