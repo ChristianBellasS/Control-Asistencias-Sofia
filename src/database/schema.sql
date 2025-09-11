@@ -11,7 +11,7 @@ CREATE TABLE personal (
     apellido_materno VARCHAR(100),  -- Apellido materno
     url_foto TEXT,  -- URL de la foto
     foto_vector BYTEA,  -- Foto en formato de vector (array de bytes)
-    grado VARCHAR(100),  -- Grado educativo (ej. "Primaria", "Secundaria", etc.)
+    grado VARCHAR(100),  -- Grado educativo (ej. "1", "2", etc.)
     tipo_personal_id INT NOT NULL,  -- ID del tipo de personal (clave foránea)
     seccion VARCHAR(100),  -- Sección del personal (opcional)
     estado VARCHAR(50) NOT NULL,  -- Estado del personal, por ejemplo 'ACTIVO' o 'INACTIVO'
