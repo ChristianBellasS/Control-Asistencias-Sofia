@@ -26,10 +26,9 @@ class Personal(db.Model):
     url_foto = db.Column(db.String(255))  # URL de la foto
     foto_vector = db.Column(db.LargeBinary)  # Foto en formato de vector (array de bytes)
     grado = db.Column(db.String(100))  # Grado educativo (ej. "Primaria", "Secundaria", etc.)
-    seccion = db.Column(db.String(1)) 
-
+    seccion = db.Column(db.String(1))  # Sección
+    
     estado = db.Column(db.String(10), nullable=False, default='ACTIVO')  # Estado de la persona (ACTIVO o INACTIVO)
-
 
     # Relación con la tabla `tipo_personal`
     tipo_personal_id = db.Column(db.Integer, db.ForeignKey('tipo_personal.id'), nullable=False)
@@ -38,16 +37,32 @@ class Personal(db.Model):
     asistencias = db.relationship('Asistencia', backref='personal', lazy=True)
 
 
+# Clase para la tabla 'cursos'
+class Curso(db.Model):
+    __tablename__ = 'cursos'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # ID único del curso
+    nombre = db.Column(db.String(255), nullable=False)  # Nombre del curso
+    descripcion = db.Column(db.Text)  # Descripción del curso
+    
+    # Relación uno a muchos con la tabla 'asistencias'
+    asistencias = db.relationship('Asistencia', backref='curso', lazy=True)
+
 # Clase para la tabla 'asistencias'
 class Asistencia(db.Model):
     __tablename__ = 'asistencias'
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # ID único de la asistencia
     persona_id = db.Column(db.Integer, db.ForeignKey('personal.id'), nullable=False)  # ID de la persona (clave foránea)
+    curso_id = db.Column(db.Integer, db.ForeignKey('cursos.id'), nullable=False)  # ID del curso (clave foránea)
     fecha_registro = db.Column(db.DateTime, default=db.func.current_timestamp())  # Fecha de registro de la asistencia
     asistencia = db.Column(db.Boolean, nullable=False, default=False)  # Asistencia (TRUE o FALSE)
     
     # Relación inversa con la tabla 'personal'
+    personal = db.relationship('Personal', backref='asistencias', lazy=True)
+    # Relación inversa con la tabla 'curso'
+    curso = db.relationship('Curso', backref='asistencias', lazy=True)
+
 class Rol(db.Model):
     __tablename__ = 'rol'
     rol_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -78,4 +93,3 @@ class Usuario(db.Model):
     correo_electronico = db.Column(db.String(100), nullable=False, unique=True)  # Agregar unique=True
     
     rol = db.relationship('Rol')
-

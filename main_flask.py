@@ -17,6 +17,7 @@ from src.services import login_services
 #Routes
 from src.routes import login_routes
 from src.routes import usuario_routes
+from src.routes import personal_routes
 
 
 app = Flask(__name__, template_folder='src/templates', static_folder='src/static')
@@ -32,7 +33,7 @@ CORS(app)
 
 app.register_blueprint(login_routes.main)
 app.register_blueprint(usuario_routes.main)
-
+app.register_blueprint(personal_routes.main)
 
 @app.route("/")
 def index():
