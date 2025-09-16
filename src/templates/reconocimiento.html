@@ -1,0 +1,117 @@
+{% extends "maestra.html" %}
+
+{% block titulo %}Reconocimiento Facial (Web + Flask){% endblock %}
+
+{% block css %}
+  <!-- Asegúrate de que la ruta esté correcta -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <style>
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      padding: 12px 24px;
+      z-index: 50;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.6rem;
+    }
+
+    header p {
+      margin: 2px 0 0;
+      font-size: 0.95rem;
+    }
+
+    .grid {
+      margin-top: 20px;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+    }
+
+    .status {
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .status.ok {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .status.fail {
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .actions button {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<header>
+  <h1>📷 Reconocimiento Facial</h1>
+  <p>Procesa tu rostro en el navegador y compara con la base en el servidor.</p>
+</header>
+
+<main class="grid">
+  <!-- ================= Cámara ================= -->
+  <section class="card">
+    <h2>🎥 Cámara</h2>
+    <video id="video" width="640" height="480" autoplay playsinline muted></video>
+    <div class="actions">
+      <button id="btnStart">▶️ Iniciar</button>
+      <button id="btnStop">⏹️ Detener</button>
+    </div>
+    <p class="hint">Permite el acceso a tu cámara para usar el sistema.</p>
+  </section>
+
+  <!-- ================= Reconocimiento ================= -->
+  <section class="card">
+    <h2>🔎 Reconocimiento</h2>
+    <div id="recogStatus" class="status">Esperando cámara…</div>
+    <div id="personCard" class="person hidden">
+      <img id="personPhoto" alt="Foto persona" />
+      <div>
+        <div><b>ID:</b> <span id="personId">—</span></div>
+        <div><b>Nombre:</b> <span id="personName">—</span></div>
+        <div><b>Distancia:</b> <span id="personDist">—</span></div>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="btnToggleRecog">⏸️ Pausar reconocimiento</button>
+    </div>
+  </section>
+</main>
+
+<!-- Asegúrate de que la ruta al JS sea correcta -->
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}
