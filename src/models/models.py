@@ -37,31 +37,14 @@ class Personal(db.Model):
     asistencias = db.relationship('Asistencia', backref='personal', lazy=True)
 
 
-# Clase para la tabla 'cursos'
-class Curso(db.Model):
-    __tablename__ = 'cursos'
-    
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # ID único del curso
-    nombre = db.Column(db.String(255), nullable=False)  # Nombre del curso
-    descripcion = db.Column(db.Text)  # Descripción del curso
-    
-    # Relación uno a muchos con la tabla 'asistencias'
-    asistencias = db.relationship('Asistencia', backref='curso', lazy=True)
-
 # Clase para la tabla 'asistencias'
 class Asistencia(db.Model):
     __tablename__ = 'asistencias'
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # ID único de la asistencia
     persona_id = db.Column(db.Integer, db.ForeignKey('personal.id'), nullable=False)  # ID de la persona (clave foránea)
-    curso_id = db.Column(db.Integer, db.ForeignKey('cursos.id'), nullable=False)  # ID del curso (clave foránea)
     fecha_registro = db.Column(db.DateTime, default=db.func.current_timestamp())  # Fecha de registro de la asistencia
     asistencia = db.Column(db.Boolean, nullable=False, default=False)  # Asistencia (TRUE o FALSE)
-    
-    # Relación inversa con la tabla 'personal'
-    personal = db.relationship('Personal', backref='asistencias', lazy=True)
-    # Relación inversa con la tabla 'curso'
-    curso = db.relationship('Curso', backref='asistencias', lazy=True)
 
 class Rol(db.Model):
     __tablename__ = 'rol'
