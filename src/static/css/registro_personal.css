@@ -1,0 +1,292 @@
+/* Reset y ajustes generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Contenedor principal con marco */
+.container-puri {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 30px;
+    border: 2px solid #5a4e23;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    max-height: 80vh;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+/* Títulos */
+h1, h4, h5 {
+    font-family: 'Segoe UI Semibold', 'Arial', sans-serif;
+    color: #8A5A44;
+    margin-bottom: 18px;
+}
+
+h1 {
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+}
+
+h4 {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+h5 {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+
+/* Estilo para los campos del formulario */
+.form-label {
+    font-size: 1.1rem;
+    color: #444;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* Estilo general de los inputs */
+.form-control {
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Enfoque de los inputs */
+.form-control:focus {
+    outline: none;
+    border-color: #5a4e23;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(90, 78, 35, 0.3); /* Sutil sombra al enfocar */
+}
+
+/* Estilo para las selecciones (dropdowns) */
+select.form-control {
+    height: 48px;
+    cursor: pointer;
+}
+
+/* Botones de acción */
+.btn {
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Botón de Registrar */
+.btn-success {
+    background-color: #5a4e23;
+    border-color: #5a4e23;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.btn-success:hover {
+    background-color: #3f3a18;
+    border-color: #3f3a18;
+    transform: translateY(-4px); /* Suaviza el efecto al pasar el ratón */
+}
+
+/* Botón de Cancelar */
+.btn-danger {
+    background-color: #c82333;
+    border-color: #c82333;
+    color: #fff;
+    font-weight: 700;
+}
+
+.btn-danger:hover {
+    background-color: #9a1f29;
+    border-color: #9a1f29;
+    transform: translateY(-4px);
+}
+
+/* Estilo de la subida de imágenes */
+input[type="file"] {
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    width: 100%;
+    transition: border 0.3s ease, background-color 0.3s ease;
+}
+
+input[type="file"]:focus {
+    outline: none;
+    border-color: #5a4e23;
+}
+
+/* Espaciado entre botones */
+.ms-3 {
+    margin-left: 15px;
+}
+
+/* Mejoras responsivas */
+@media (max-width: 768px) {
+    .container-puri {
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    .form-label {
+        font-size: 1rem;
+    }
+
+    .form-control, .btn {
+        font-size: 1rem;
+        padding: 10px 12px;
+    }
+
+    .btn-success, .btn-danger {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+}
+
+/* Sección de cámara */
+#cameraSection, #uploadSection {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+#cameraSection:hover, #uploadSection:hover {
+    background-color: #f1f1f1; /* Cambiar color al pasar el ratón */
+}
+
+/* Instrucciones y botones dentro de las secciones */
+#instrucciones {
+    font-size: 1.3rem;
+    color: #5a4e23;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Estilo para las fotos tomadas */
+#fotosList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#fotosList img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Sección de cámara */
+video {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 100%; /* Para que la cámara no se desborde */
+}
+
+/* Estilo para los radio buttons */
+.form-check-input:checked {
+    background-color: #5a4e23;
+    border-color: #5a4e23;
+}
+
+.form-check-label {
+    font-size: 1rem;
+    color: #5D3A21;
+}
+
+/* Animaciones y transiciones */
+.form-control, .btn {
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .btn:hover {
+    transform: scale(1.05);
+}
+
+/* Estilo general para los iconos */
+.fas {
+    font-size: 1.2rem;
+    color: #5a4e23;
+}
+
+/* Botones con iconos */
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn i {
+    margin-right: 8px;
+}
+
+/* Estilos para los iconos en los encabezados */
+.table th {
+    background: linear-gradient(90deg, #8A5A44 0%, #C09F77 100%);
+    color: #fff;
+    font-weight: 700;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    letter-spacing: 0.5px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Espacio entre el icono y el texto */
+}
+
+.table th i {
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+/* Ajustes de los radio buttons */
+.form-check-input:checked {
+    background-color: #5a4e23;
+    border-color: #5a4e23;
+}
+
+.form-check-label {
+    font-size: 1rem;
+    color: #5D3A21;
+}
+
+/* Sección de cámara */
+#cameraSection, #uploadSection {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+#cameraSection:hover, #uploadSection:hover {
+    background-color: #f1f1f1; /* Cambiar color al pasar el ratón */
+}
