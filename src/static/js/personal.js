@@ -142,3 +142,62 @@ window.onload = function() {
     actualizarPaginacion();
 }
 
+// Función para manejar los clics en los botones de eliminación
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.btn-danger').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            // Obtener el ID del personal desde el atributo 'data-id'
+            const personaId = button.getAttribute('data-id');
+
+            // Mostrar cuadro de confirmación
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Esta acción no se puede deshacer!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Realizar la eliminación si se confirma
+                    fetch(`/personal/eliminar/${personaId}`, {
+                        method: 'GET'
+                    })
+                    .then(response => response.json())  // Espera la respuesta en formato JSON
+                    .then(data => {
+                        if (data.message === "¡Registro eliminado exitosamente!") {
+                            // Mostrar mensaje de éxito
+                            Swal.fire(
+                                '¡Eliminado!',
+                                'El personal ha sido eliminado correctamente.',
+                                'success'
+                            ).then(() => {
+                                // Recargar la página o actualizar la tabla sin necesidad de redirigir
+                                location.reload();
+                            });
+                        } else {
+                            // Si no es exitoso, mostrar mensaje de error
+                            Swal.fire(
+                                'Error',
+                                'No se pudo eliminar el personal.',
+                                'error'
+                            );
+                        }
+                    })
+                    .catch(error => {
+                        // Mostrar mensaje de error si la solicitud falla
+                        Swal.fire(
+                            'Error',
+                            'Hubo un problema al intentar eliminar el personal.',
+                            'error'
+                        );
+                    });
+                }
+            });
+        });
+    });
+});
+

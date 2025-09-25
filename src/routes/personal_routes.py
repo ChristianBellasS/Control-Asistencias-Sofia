@@ -127,3 +127,18 @@ def obtener_personal_todos():
     except Exception as e:
         print(f"Error al obtener los roles: {e}")
         return jsonify({'error': 'No se pudieron cargar los roles.'}), 500
+
+@main.route('/eliminar/<int:persona_id>', methods=['GET'])
+def eliminar_personal(persona_id):
+    try:
+        persona = Personal.query.get(persona_id)
+        if persona:
+            persona.estado = 'INACTIVO'
+            db.session.commit()
+            return jsonify({"message": "¡Registro eliminado exitosamente!"}), 200
+        else:
+            return jsonify({"message": "Personal no encontrado."}), 404
+    except Exception as e:
+        print(f"Error al eliminar: {str(e)}")
+        return jsonify({"message": "Error al eliminar el personal."}), 500
+
