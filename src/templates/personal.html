@@ -82,10 +82,18 @@
                     <td>{{ persona.estado }}</td>
                     <td>{{ persona.tipo_personal.tipo }}</td>
                     <td class="text-center">
-                        <a href="#" class="btn btn-danger btn-sm"  data-id="{{ persona.id }}">
+                        {% if persona.estado == 'INACTIVO' %}
+                        <button class="btn btn-success btn-sm" id="activarBtn{{ persona.id }}"
+                            data-id="{{ persona.id }}">
+                            <i class="fas fa-check-circle"></i>
+                        </button>
+                        {% else %}
+                        <a href="#" class="btn btn-danger btn-sm" data-id="{{ persona.id }}">
                             <i class="fas fa-trash"></i>
                         </a>
+                        {% endif %}
                     </td>
+
                 </tr>
                 {% else %}
                 <tr>

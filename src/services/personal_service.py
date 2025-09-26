@@ -54,3 +54,12 @@ def obtener_personal():
     print(f"Personales recuperados: {roles}")
 
     return roles  # Devolvemos una lista de diccionarios
+
+def activar_personal_service(persona):
+    try:
+        persona.estado = 'ACTIVO' 
+        db.session.commit() 
+        return persona 
+    except Exception as e:
+        print(f"Error al activar el personal: {str(e)}")
+        return None

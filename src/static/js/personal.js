@@ -44,7 +44,7 @@ function actualizarPaginacion() {
     // Filtrar los registros de la tabla según los filtros (búsqueda y estado)
     for (var i = 1; i < tr.length; i++) {
         if (tr[i].style.display !== "none") {
-            registrosFiltrados.push({index: i});
+            registrosFiltrados.push({ index: i });
         }
     }
 
@@ -138,14 +138,14 @@ function filtrarPorEstado() {
 }
 
 // Inicialización de la paginación cuando la página carga
-window.onload = function() {
+window.onload = function () {
     actualizarPaginacion();
 }
 
 // Función para manejar los clics en los botones de eliminación
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.btn-danger').forEach(function(button) {
-        button.addEventListener('click', function(event) {
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.btn-danger').forEach(function (button) {
+        button.addEventListener('click', function (event) {
             event.preventDefault();
 
             // Obtener el ID del personal desde el atributo 'data-id'
@@ -166,38 +166,91 @@ document.addEventListener('DOMContentLoaded', function() {
                     fetch(`/personal/eliminar/${personaId}`, {
                         method: 'GET'
                     })
-                    .then(response => response.json())  // Espera la respuesta en formato JSON
-                    .then(data => {
-                        if (data.message === "¡Registro eliminado exitosamente!") {
-                            // Mostrar mensaje de éxito
-                            Swal.fire(
-                                '¡Eliminado!',
-                                'El personal ha sido eliminado correctamente.',
-                                'success'
-                            ).then(() => {
-                                // Recargar la página o actualizar la tabla sin necesidad de redirigir
-                                location.reload();
-                            });
-                        } else {
-                            // Si no es exitoso, mostrar mensaje de error
+                        .then(response => response.json())  // Espera la respuesta en formato JSON
+                        .then(data => {
+                            if (data.message === "¡Registro eliminado exitosamente!") {
+                                // Mostrar mensaje de éxito
+                                Swal.fire(
+                                    '¡Eliminado!',
+                                    'El personal ha sido eliminado correctamente.',
+                                    'success'
+                                ).then(() => {
+                                    // Recargar la página o actualizar la tabla sin necesidad de redirigir
+                                    location.reload();
+                                });
+                            } else {
+                                // Si no es exitoso, mostrar mensaje de error
+                                Swal.fire(
+                                    'Error',
+                                    'No se pudo eliminar el personal.',
+                                    'error'
+                                );
+                            }
+                        })
+                        .catch(error => {
+                            // Mostrar mensaje de error si la solicitud falla
                             Swal.fire(
                                 'Error',
-                                'No se pudo eliminar el personal.',
+                                'Hubo un problema al intentar eliminar el personal.',
                                 'error'
                             );
-                        }
-                    })
-                    .catch(error => {
-                        // Mostrar mensaje de error si la solicitud falla
-                        Swal.fire(
-                            'Error',
-                            'Hubo un problema al intentar eliminar el personal.',
-                            'error'
-                        );
-                    });
+                        });
                 }
             });
         });
     });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    // Escucha para el botón de activación
+    document.querySelectorAll('.btn-success').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            const personaId = button.getAttribute('data-id');
+
+            // Muestra la alerta de confirmación
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Este usuario se activará y cambiará su estado a ACTIVO!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, activar',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, hacemos la solicitud para activar el personal
+                    fetch(`/personal/activar/${personaId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.message === "¡Personal activado exitosamente!") {
+                                // Si la activación es exitosa, mostramos un mensaje y recargamos la página
+                                Swal.fire(
+                                    '¡Activado!',
+                                    'El personal ha sido activado correctamente.',
+                                    'success'
+                                ).then(() => {
+                                    location.reload();  // Recargar la página
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Error',
+                                    'Hubo un problema al activar el personal.',
+                                    'error'
+                                );
+                            }
+                        })
+                        .catch(error => {
+                            // Manejo de errores si la solicitud falla
+                            Swal.fire(
+                                'Error',
+                                'Hubo un problema al intentar activar el personal.',
+                                'error'
+                            );
+                        });
+                }
+            });
+        });
+    });
+});

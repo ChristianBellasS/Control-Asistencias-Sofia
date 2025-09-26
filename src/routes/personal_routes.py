@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, render_template, request, redirect, url_for
 from src.models.models import db, Personal, TipoPersonal
-from src.services.personal_service import crear_personal_service, editar_personal_service, eliminar_personal_service, obtener_personal
+from src.services.personal_service import crear_personal_service, activar_personal_service, eliminar_personal_service, obtener_personal
 from src.services.reconocimiento_services import b64_to_bgr_image, extract_face_embedding, save_db, load_db
 import os
 import time
@@ -142,3 +142,21 @@ def eliminar_personal(persona_id):
         print(f"Error al eliminar: {str(e)}")
         return jsonify({"message": "Error al eliminar el personal."}), 500
 
+
+@main.route('/activar/<int:persona_id>', methods=['GET'])
+def activar_personal(persona_id):
+    try:
+        persona = Personal.query.get(persona_id)
+
+        if persona:
+            updated_persona = activar_personal_service(persona)
+            
+            if updated_persona:
+                return jsonify({"message": "¡Personal activado exitosamente!"}), 200
+            else:
+                return jsonify({"message": "Error al activar el personal."}), 500
+        else:
+            return jsonify({"message": "Personal no encontrado."}), 404
+    except Exception as e:
+        print(f"Error al activar: {str(e)}")
+        return jsonify({"message": "Error al activar el personal."}), 500
