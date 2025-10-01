@@ -143,6 +143,7 @@ window.onload = function () {
 }
 
 // Función para manejar los clics en los botones de eliminación
+// Función para manejar los clics en los botones de eliminación
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.btn-danger').forEach(function (button) {
         button.addEventListener('click', function (event) {
@@ -151,15 +152,30 @@ document.addEventListener('DOMContentLoaded', function () {
             // Obtener el ID del personal desde el atributo 'data-id'
             const personaId = button.getAttribute('data-id');
 
-            // Mostrar cuadro de confirmación
+            // Mostrar cuadro de confirmación con el nuevo diseño
             Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡Esta acción no se puede deshacer!",
-                icon: 'warning',
+                title: '🗑️ ¿Estás seguro de eliminar este registro?',
+                html: `
+                    <div style="
+                        font-size: 15px;
+                        background: #fef2f2;
+                        padding: 16px;
+                        border-radius: 12px;
+                        border-left: 6px solid #ef4444;
+                        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+                        color: #7f1d1d;
+                        font-family: 'Segoe UI', sans-serif;
+                    ">
+                        <strong style="color: #dc2626;">Advertencia:</strong> Esta acción <strong>eliminará permanentemente</strong> el registro. No se podrá deshacer.
+                    </div>
+                `,
+                icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
+                confirmButtonText: '🗑️ ¡Sí, eliminar!',
+                cancelButtonText: '❌ Cancelar',
+                confirmButtonColor: '#ef4444',  // Color rojo para la eliminación
+                cancelButtonColor: '#9ca3af',  // Gris neutro para el botón de cancelación
+                background: '#ffffff'
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Realizar la eliminación si se confirma
@@ -170,11 +186,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         .then(data => {
                             if (data.message === "¡Registro eliminado exitosamente!") {
                                 // Mostrar mensaje de éxito
-                                Swal.fire(
-                                    '¡Eliminado!',
-                                    'El personal ha sido eliminado correctamente.',
-                                    'success'
-                                ).then(() => {
+                                Swal.fire({
+                                    title: "✅ Personal Inactivado!",
+                                    text: "El personal ha sido inactivado correctamente.",
+                                    icon: "success",
+                                    timer: 2000,
+                                    showConfirmButton: false,
+                                }).then(() => {
                                     // Recargar la página o actualizar la tabla sin necesidad de redirigir
                                     location.reload();
                                 });
@@ -201,23 +219,39 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
 document.addEventListener('DOMContentLoaded', function () {
     // Escucha para el botón de activación
-    document.querySelectorAll('.btn-success').forEach(function (button) {
+    document.querySelectorAll('.btn-activar').forEach(function (button) {
         button.addEventListener('click', function (event) {
             event.preventDefault();
 
             const personaId = button.getAttribute('data-id');
 
-            // Muestra la alerta de confirmación
+            // Muestra la alerta de confirmación con el nuevo diseño
             Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡Este usuario se activará y cambiará su estado a ACTIVO!",
+                title: '🟢 ¿Estás seguro de activar este registro?',
+                html: `
+                    <div style="
+                        font-size: 15px;
+                        background: #fef2f2;
+                        padding: 16px;
+                        border-radius: 12px;
+                        border-left: 6px solid #10b981;  // Color verde para la activación
+                        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+                        color: #165e35;
+                        font-family: 'Segoe UI', sans-serif;
+                    ">
+                        <strong style="color: #15803d;">Advertencia:</strong> Esta acción <strong>activará</strong> al personal y cambiará su estado a <strong>ACTIVO</strong>.
+                    </div>
+                `,
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Sí, activar',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
+                confirmButtonText: '🟢 Sí, activar',
+                cancelButtonText: '❌ Cancelar',
+                confirmButtonColor: '#10b981',  // Color verde para la activación
+                cancelButtonColor: '#ef4444',  // Color rojo para cancelar
+                background: '#ffffff'
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Si el usuario confirma, hacemos la solicitud para activar el personal
@@ -226,12 +260,15 @@ document.addEventListener('DOMContentLoaded', function () {
                         .then(data => {
                             if (data.message === "¡Personal activado exitosamente!") {
                                 // Si la activación es exitosa, mostramos un mensaje y recargamos la página
-                                Swal.fire(
-                                    '¡Activado!',
-                                    'El personal ha sido activado correctamente.',
-                                    'success'
-                                ).then(() => {
-                                    location.reload();  // Recargar la página
+                                Swal.fire({
+                                    title: "✅ Personal Activado!",
+                                    text: "El personal ha sido activado correctamente.",
+                                    icon: "success",
+                                    timer: 2000,
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    // Recargar la página o actualizar la tabla sin necesidad de redirigir
+                                    location.reload();
                                 });
                             } else {
                                 Swal.fire(
@@ -254,3 +291,4 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+

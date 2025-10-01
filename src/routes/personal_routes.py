@@ -1,19 +1,20 @@
 from flask import Blueprint, jsonify, render_template, request, redirect, url_for
 from src.models.models import db, Personal, TipoPersonal
-from src.services.personal_service import crear_personal_service, activar_personal_service, eliminar_personal_service, obtener_personal
+from src.services.personal_service import crear_personal_service, activar_personal_service, filtrar_personal, obtener_personal
 from src.services.reconocimiento_services import b64_to_bgr_image, extract_face_embedding, save_db, load_db
 import os
 import time
 import cv2
 import numpy as np
 import face_recognition  # Usamos face_recognition en lugar de dlib
+from unidecode import unidecode
 
 # Crear el blueprint
 main = Blueprint("personal", __name__, url_prefix="/personal")
 
 # ---------------- Configuración ----------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOADS_DIR = os.path.join("uploads")  # Ruta a la carpeta de imágenes
+UPLOADS_DIR = os.path.join(BASE_DIR, "..", "uploads")  # Ruta a la carpeta de imágenes
 DB_DIR = os.path.join(BASE_DIR, "..", "face_db")  # Ruta a la base de datos de embeddings
 ENC_PATH = os.path.join(DB_DIR, "encodings.npy")
 LAB_PATH = os.path.join(DB_DIR, "labels.json")
@@ -25,7 +26,11 @@ def ensure_dirs():
     os.makedirs(UPLOADS_DIR, exist_ok=True)
     os.makedirs(DB_DIR, exist_ok=True)
 
-# ---------------- Ruta para crear un nuevo personal ----------------
+def normalizar_nombre(nombre):
+    # Convierte caracteres especiales (como la ñ y las tildes) a sus equivalentes ASCII
+    return unidecode(nombre)
+
+# Ruta para crear un nuevo personal
 # Ruta para crear un nuevo personal
 @main.route('/crear_personal', methods=['POST'])
 def crear_personal():
@@ -67,10 +72,12 @@ def crear_personal():
             embeddings.append(emb)
 
             ts = int(time.time())
-            photo_filename = f"{nombres}_{apellido_paterno}_{ts}_{i+1}.jpg"
+            # Normalizamos el nombre del archivo
+            photo_filename = f"{normalizar_nombre(nombres)}_{normalizar_nombre(apellido_paterno)}_{ts}_{i+1}.jpg".replace(" ", "_")
             photo_path = os.path.join(UPLOADS_DIR, photo_filename)
             cv2.imwrite(photo_path, image_bgr)
-            photo_paths.append(photo_path)
+            # Guardar solo el nombre del archivo, no la ruta completa
+            photo_paths.append(photo_filename)  # ← CAMBIO IMPORTANTE AQUÍ
 
         if not embeddings:
             return jsonify({"message": "No se pudo extraer rostro de las imágenes proporcionadas."}), 400
@@ -87,12 +94,11 @@ def crear_personal():
         if persona is None:
             return jsonify({"message": "Error al registrar el personal."}), 500
 
-        # Normalizar las rutas de las fotos
-        normalized_photo_paths = [path.replace("\\", "/") for path in photo_paths]
+        # Solo nombres de archivo, ya no necesitas normalizar rutas
         labels.append({
             "id": persona.id,
             "name": f"{persona.nombres} {persona.apellido_paterno}",
-            "photos": normalized_photo_paths
+            "photos": photo_paths  # ← Ahora solo contiene nombres de archivo
         })
 
         # Guardar encodings y labels
@@ -160,3 +166,13 @@ def activar_personal(persona_id):
     except Exception as e:
         print(f"Error al activar: {str(e)}")
         return jsonify({"message": "Error al activar el personal."}), 500
+
+@main.route('/filtrar_personal_route', methods=['GET'])
+def filtrar_personal_route():
+    tipo_personal = request.args.get('tipo_personal')
+    grado = request.args.get('grado')
+    seccion = request.args.get('seccion')
+
+    personal_filtrado = filtrar_personal(tipo_personal, grado, seccion)
+
+    return jsonify(personal_filtrado)
