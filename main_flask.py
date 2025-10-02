@@ -18,12 +18,12 @@ from src.services import login_services
 from src.routes import login_routes
 from src.routes import usuario_routes
 from src.routes import personal_routes
-
+from src.routes import reconocimiento_routes
+from src.routes import asistencias_routes
 
 app = Flask(__name__, template_folder='src/templates', static_folder='src/static')
 app.config["SECRET_KEY"] = config('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{config("POSTGRES_USER")}:{config("POSTGRES_PASSWORD")}@{config("POSTGRES_HOST")}:{config("POSTGRES_PORT")}/{config("POSTGRES_DB")}'
-app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB (ajusta según sea necesario)
 
 
@@ -34,6 +34,8 @@ CORS(app)
 app.register_blueprint(login_routes.main)
 app.register_blueprint(usuario_routes.main)
 app.register_blueprint(personal_routes.main)
+app.register_blueprint(reconocimiento_routes.main)
+app.register_blueprint(asistencias_routes.main)
 
 @app.route("/")
 def index():
