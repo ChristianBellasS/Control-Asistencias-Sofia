@@ -1,0 +1,136 @@
+{% extends "maestra.html" %}
+
+{% block titulo %}Editar Perfil{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/editar_usuario.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="contenedor-principal">
+        <div class="header">
+            <h1>Editar perfil de usuario</h1>
+        </div>
+
+        <form id="formEditarUsuario" autocomplete="off" novalidate enctype="multipart/form-data">
+            <input type="hidden" id="usuario_id" value="{{ usuario.user_id }}">
+
+            <!-- Imagen de perfil -->
+            <div class="text-center mb-4">
+                <img id="previewFoto"
+                    src="{{ url_for('static', filename='images/' + usuario.foto) if usuario.foto else url_for('static', filename='images/default.png') }}"
+                    alt="Foto de perfil" class="rounded-circle shadow border border-3 border-primary" width="130"
+                    height="130">
+                <div class="mt-2">
+                    <label for="foto" class="btn btn-outline-primary btn-sm">
+                        <i class="fa-solid fa-upload"></i> Cambiar Foto
+                    </label>
+                    <input type="file" name="foto" id="foto" accept="image/*" hidden>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Columna izquierda -->
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label for="dni"><i class="fa-solid fa-id-card"></i> DNI</label>
+                        <input type="text" class="form-control" id="dni" maxlength="8" value="{{ usuario.dni }}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="nombres"><i class="fa-solid fa-user"></i> Nombres</label>
+                        <input type="text" class="form-control" id="nombres" maxlength="80" value="{{ usuario.nombres }}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="apellido_materno"><i class="fa-solid fa-user"></i> Apellido Materno</label>
+                        <input type="text" class="form-control" id="apellido_materno"
+                            maxlength="80" value="{{ usuario.apellido_materno }}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="correo_electronico"><i class="fa-solid fa-envelope"></i> Correo Electrónico</label>
+                        <input type="email" class="form-control" id="correo_electronico"
+                            value="{{ usuario.correo_electronico }}">
+                    </div>
+                </div>
+
+                <!-- Columna derecha -->
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label for="usuario"><i class="fa-solid fa-user"></i> Usuario</label>
+                        <input type="text" class="form-control" id="usuario" maxlength="25" value="{{ usuario.usuario }}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="apellido_paterno"><i class="fa-solid fa-user"></i> Apellido Paterno</label>
+                        <input type="text" class="form-control" id="apellido_paterno"
+                            maxlength="80" value="{{ usuario.apellido_paterno }}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="telefono"><i class="fa-solid fa-phone"></i> Teléfono</label>
+                        <input type="text" class="form-control" id="telefono" maxlength="9" value="{{ usuario.telefono }}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="contrasena"><i class="fa-solid fa-key"></i> Nueva Contraseña</label>
+                        <input type="password" class="form-control" id="contrasena"
+                            placeholder="Dejar en blanco si no desea cambiar">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-save"></i> Guardar Cambios
+                </button>
+                <a href="/" class="btn btn-secondary">
+                    <i class="fa-solid fa-xmark"></i> Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/editar_usuario.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const inputs = document.querySelectorAll('#formEditarUsuario input');
+
+  inputs.forEach(input => {
+    // 1. Forzar desactivación de autocompletado
+    input.setAttribute('autocomplete', 'new-password');
+    input.setAttribute('aria-autocomplete', 'none');
+    input.setAttribute('spellcheck', 'false');
+    input.setAttribute('autocapitalize', 'off');
+
+    // 2. Truco para bloquear sugerencias sin romper escritura
+    input.setAttribute('readonly', true);
+    input.addEventListener('focus', () => {
+      input.removeAttribute('readonly');
+    });
+
+    // 3. Extra para password: bloquear menú derecho y mouse
+    if (input.type === "password") {
+      input.setAttribute("oncontextmenu", "return false");
+      input.setAttribute("autocomplete", "off"); // refuerzo
+      input.addEventListener('mousedown', (e) => {
+        if (document.activeElement !== input) {
+          e.preventDefault();
+          input.focus();
+        }
+      });
+    }
+  });
+});
+</script>
+{% endblock %}
+
+{% block footer %}{% endblock %}
