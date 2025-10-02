@@ -50,7 +50,11 @@
 
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="usuarioDropdown">
-                                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-user"></i> Editar perfil</a>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-2"
+                                        href="{{ url_for('usuario.perfil_usuario') }}">
+                                        <i class="fa-solid fa-user-pen text-primary"></i> Editar perfil
+                                    </a>
                                 </li>
                                 <li> <a class="dropdown-item d-flex align-items-center gap-2" href="#"
                                         id="cerrarSesionBtn">
@@ -77,6 +81,7 @@
                                     <i class="fa-solid fa-users"></i> Gestión Personal
                                 </a></li>
                         </ul>
+
                     </li>
 
                     <!-- Gestión de Asistencias -->
@@ -85,7 +90,8 @@
                             <i class="fa-solid fa-calendar-check"></i> Asistencias
                         </a>
                         <ul class="collapse list-unstyled ms-3" id="asistenciasSubmenu">
-
+                            <li><a href="{{ url_for('reconocimiento.reconocimiento_rostros') }}"
+                                    class="nav-link">Control de asistencias</a></li>
                         </ul>
                     </li>
 
@@ -95,6 +101,8 @@
                             <i class="fa-solid fa-chart-line"></i> Reportes
                         </a>
                         <ul class="collapse list-unstyled ms-3" id="reportesSubmenu">
+                            <li><a href="{{ url_for('asistencias.listar_asistencias') }}" class="nav-link">Reporte de
+                                    asistencia</a></li>
                             <li><a href="#" class="nav-link">Reporte de ausencias</a></li>
                         </ul>
                     </li>
