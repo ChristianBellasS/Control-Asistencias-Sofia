@@ -74,6 +74,15 @@ def registro_usuario():
         print(e)
         return jsonify({"success": False, "message": "Ocurrió un error desconocido. Intenta nuevamente."}), 500
 
+@main.route('/perfil_usuario', methods=['GET'])
+def perfil_usuario():
+    if not verificar_autenticacion(): return redirect('/no_autenticado')
+    usuario = obtener_usuario_actual()
+    if not usuario:
+        return redirect("/inicio_sesion")
+
+    return render_template("editar_usuario.html", usuario=usuario)
+
 @main.route('/editar/<int:usuario_id>', methods=['POST'])
 def editar_usuario(usuario_id):
     if not verificar_autenticacion(): return redirect('/no_autenticado')
