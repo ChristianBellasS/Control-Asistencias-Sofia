@@ -71,17 +71,17 @@ select.form-control {
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-/* Botón de Registrar */
-.btn-success {
-    background-color: #5a4e23;
-    border-color: #5a4e23;
-    color: #fff;
+
+.btn-activar {
+    background-color: #10b981 !important;
+    border-color: #10b981 !important;
+    color: #fff !important;
 }
 
-.btn-success:hover {
-    background-color: #3f3a18;
-    border-color: #3f3a18;
-    transform: translateY(-2px);
+.btn-activar:hover {
+    background-color: #0e9c6e !important;
+    border-color: #0e9c6e !important;
+    transform: translateY(-2px) !important;
 }
 
 /* Botón de Cancelar */
