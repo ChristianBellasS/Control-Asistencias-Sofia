@@ -85,11 +85,16 @@ function scheduleRecognition() {
         personId.textContent = data.id || "—";
         personName.textContent = data.name || "—";
         personDist.textContent = data.distance ?? "—";
-        if (data.photo) personPhoto.src = data.photo;
+
+        if (data.photo) {
+          console.log("URL de la foto:", data.photo);
+          personPhoto.src = data.photo;  // Esto debería estar apuntando correctamente a la imagen
+        }
       } else {
         recogStatus.textContent = "❌ No reconocido";
         personCard.classList.add("hidden");
       }
+
     } catch (e) {
       console.error(e);
       recogStatus.textContent = "Error de red";
