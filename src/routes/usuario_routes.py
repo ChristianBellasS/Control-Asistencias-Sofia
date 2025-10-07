@@ -81,7 +81,7 @@ def perfil_usuario():
     if not usuario:
         return redirect("/inicio_sesion")
 
-    return render_template("editar_usuario.html", usuario=usuario)
+    return render_template("editar_perfil_usuario.html", usuario=usuario)
 
 @main.route('/editar/<int:usuario_id>', methods=['POST'])
 def editar_usuario(usuario_id):

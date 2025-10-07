@@ -63,3 +63,28 @@ def activar_personal_service(persona):
     except Exception as e:
         print(f"Error al activar el personal: {str(e)}")
         return None
+    
+def filtrar_personal(tipo_personal, grado, seccion):
+    """Filtra el personal según tipo de personal, grado y sección"""
+    query = Personal.query
+
+    # Filtrar por tipo de personal si se proporciona
+    if tipo_personal:
+        query = query.filter(Personal.tipo_personal_id == tipo_personal)
+
+    # Filtrar por grado si se proporciona y es Alumna
+    if grado:
+        query = query.filter(Personal.grado == grado)
+
+    # Filtrar por sección si se proporciona y es Alumna
+    if seccion:
+        query = query.filter(Personal.seccion == seccion)
+
+    # Obtener los resultados filtrados
+    resultados = query.all()
+
+    # Devolver los resultados como una lista de diccionarios
+    return [{
+        'id': persona.id,
+        'nombre': f'{persona.nombres} {persona.apellido_paterno} {persona.apellido_materno}'
+    } for persona in resultados]
