@@ -1,5 +1,10 @@
+let currentPage = 1;
+const perPage = 10;
+let totalPages = 1;
+
 document.addEventListener('DOMContentLoaded', function () {
     cargarTiposDePersonal();
+    cargarAsistencias(); // Cargar asistencias al iniciar
 });
 
 // Cargar tipos de personal
@@ -17,12 +22,95 @@ function cargarTiposDePersonal() {
 
             data.forEach(tipo => {
                 const option = document.createElement('option');
-                option.value = tipo.nombre;  // <-- guardamos el nombre directamente
+                option.value = tipo.nombre;
                 option.textContent = tipo.nombre;
                 tipoPersonalSelect.appendChild(option);
             });
         })
         .catch(error => console.error('Error al cargar los tipos de personal:', error));
+}
+
+// Cargar asistencias desde el servidor
+function cargarAsistencias(page = 1) {
+    const tipo = document.getElementById('tipoPersonalSelect').value;
+    const grado = document.getElementById('gradoSelect').value;
+    const seccion = document.getElementById('seccionSelect').value;
+    const fecha = document.getElementById('fechaFiltro').value;
+    const q = document.getElementById('buscarAsistencia').value;
+
+    // Construir URL con parámetros
+    let url = `/asistencias/listar?page=${page}&per_page=${perPage}`;
+    
+    if (tipo) url += `&tipo=${encodeURIComponent(tipo)}`;
+    if (grado) url += `&grado=${encodeURIComponent(grado)}`;
+    if (seccion) url += `&seccion=${encodeURIComponent(seccion)}`;
+    if (fecha) url += `&fecha=${encodeURIComponent(fecha)}`;
+    if (q) url += `&q=${encodeURIComponent(q)}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            currentPage = data.page;
+            totalPages = data.total_pages;
+            
+            mostrarAsistencias(data.items);
+            actualizarPaginador();
+        })
+        .catch(error => console.error('Error al cargar asistencias:', error));
+}
+
+// Mostrar asistencias en la tabla
+function mostrarAsistencias(asistencias) {
+    const tbody = document.getElementById('tbodyAsistencias');
+    tbody.innerHTML = '';
+
+    if (asistencias.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center">No se encontraron registros de asistencia.</td>
+            </tr>
+        `;
+        return;
+    }
+
+    asistencias.forEach(asistencia => {
+        const row = document.createElement('tr');
+        row.setAttribute('data-tipo', asistencia.data.tipo);
+        row.setAttribute('data-grado', asistencia.data.grado);
+        row.setAttribute('data-seccion', asistencia.data.seccion);
+        row.setAttribute('data-fecha', asistencia.data.fecha);
+
+        row.innerHTML = `
+            <td>${asistencia.nombre_completo}</td>
+            <td>${asistencia.grado}</td>
+            <td>${asistencia.seccion}</td>
+            <td>${asistencia.fecha_hora}</td>
+            <td>${asistencia.asistencia}</td>
+            <td>${asistencia.tipo}</td>
+            <td class="text-center">
+                <button class="btn btn-danger btn-sm" onclick="eliminarAsistencia(${asistencia.id})">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+
+        tbody.appendChild(row);
+    });
+}
+
+// Actualizar paginador
+function actualizarPaginador() {
+    document.getElementById('paginaActual').textContent = `Página ${currentPage} de ${totalPages}`;
+    document.getElementById('prevBtn').disabled = currentPage <= 1;
+    document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+}
+
+// Cambiar página
+function cambiarPagina(delta) {
+    const newPage = currentPage + delta;
+    if (newPage >= 1 && newPage <= totalPages) {
+        cargarAsistencias(newPage);
+    }
 }
 
 // Habilitar grado y sección solo si es ALUMNA
@@ -53,42 +141,15 @@ function buscarAsistencia() {
     });
 }
 
-// Filtro combinado por tipo, grado, sección y fecha
+// Para el filtro local (si aún lo quieres mantener)
 function aplicarFiltros() {
-    const tipoPersonal = document.getElementById('tipoPersonalSelect').value.toLowerCase();
-    const grado = document.getElementById('gradoSelect').value.toLowerCase();
-    const seccion = document.getElementById('seccionSelect').value.toLowerCase();
-    const fecha = document.getElementById('fechaFiltro').value; // formato yyyy-mm-dd
-    const rows = document.querySelectorAll('#tablaAsistencias tbody tr');
-
-    rows.forEach(row => {
-        const nombreTipo = row.cells[3].textContent.toLowerCase();
-        const fechaRegistro = row.cells[1].textContent.split(' ')[0]; // yyyy-mm-dd
-
-        let mostrar = true;
-
-        // Filtrar por tipo de personal
-        if (tipoPersonal && nombreTipo !== tipoPersonal) mostrar = false;
-
-        // Si es ALUMNA, filtrar también por grado y sección
-        if (tipoPersonal === 'alumna') {
-            const filaGrado = row.getAttribute('data-grado')?.toLowerCase() || '';
-            const filaSeccion = row.getAttribute('data-seccion')?.toLowerCase() || '';
-            if (grado && filaGrado !== grado) mostrar = false;
-            if (seccion && filaSeccion !== seccion) mostrar = false;
-        }
-
-        // Filtrar por fecha
-        if (fecha && fechaRegistro !== fecha) mostrar = false;
-
-        row.style.display = mostrar ? '' : 'none';
-    });
+    // Ahora usamos cargarAsistencias que hace el filtro en el servidor
+    cargarAsistencias(1);
 }
 
+// Descargar Excel (actualizado para usar datos dinámicos)
 function descargarExcel() {
     const tabla = document.getElementById('tablaAsistencias');
-
-    // Filas visibles
     const filas = Array.from(tabla.querySelectorAll('tbody tr'))
         .filter(row => row.style.display !== 'none');
 
@@ -97,23 +158,71 @@ function descargarExcel() {
         return;
     }
 
-    // Encabezados (excluyendo última columna "Acciones")
     const encabezados = Array.from(tabla.querySelectorAll('thead th'))
-        .slice(0, -1) // quitamos la última columna
+        .slice(0, -1)
         .map(th => th.textContent.trim());
 
-    // Datos visibles (excluyendo última columna)
     const datos = filas.map(row => {
         return Array.from(row.cells)
-            .slice(0, -1) // quitamos la última columna
+            .slice(0, -1)
             .map(cell => cell.textContent.trim());
     });
 
-    // Crear hoja de Excel
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet([encabezados, ...datos]);
     XLSX.utils.book_append_sheet(wb, ws, "Asistencias");
-
-    // Descargar archivo
     XLSX.writeFile(wb, "Asistencias.xlsx");
+}
+
+// Función de eliminación (sin cambios)
+function eliminarAsistencia(asistenciaId) {
+    Swal.fire({
+        title: "🗑️ ¿Estás seguro de eliminar esta asistencia?",
+        html: `
+            <div style="
+                font-size: 15px;
+                background: #fef2f2;
+                padding: 16px;
+                border-radius: 12px;
+                border-left: 6px solid #ef4444;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+                color: #7f1d1d;
+                font-family: 'Segoe UI', sans-serif;
+            ">
+                <strong style="color: #dc2626;">Advertencia:</strong> Esta acción <strong>eliminará permanentemente</strong> la asistencia. No se podrá deshacer.
+            </div>
+        `,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "🗑️ ¡Sí, eliminar!",
+        cancelButtonText: "❌ Cancelar",
+        confirmButtonColor: "#ef4444",
+        cancelButtonColor: "#9ca3af",
+        background: "#ffffff"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/asistencias/eliminar_asistencia/${asistenciaId}`, {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: "✅ ¡Asistencia Eliminada!",
+                        text: "La asistencia ha sido eliminada correctamente.",
+                        icon: "success",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    // Recargar las asistencias después de eliminar
+                    cargarAsistencias(currentPage);
+                } else {
+                    Swal.fire('Error', 'Hubo un problema al eliminar la asistencia.', 'error');
+                }
+            })
+            .catch(error => {
+                Swal.fire('Error', 'Hubo un problema con la conexión.', 'error');
+            });
+        }
+    });
 }

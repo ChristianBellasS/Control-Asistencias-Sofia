@@ -1,0 +1,234 @@
+/* Reset y Ajustes Generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e9e4df 100%);
+    color: #3d2c1a;
+}
+
+/* Contenedor Principal */
+.container-puri {
+    width: 100%;
+    margin: 0 auto;
+    padding: 30px;
+    border: 2px solid #5a4e23;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Título */
+h1 {
+    font-size: 2.5rem;
+    color: #5a4e23;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Tabla */
+.table {
+    width: 100%;
+    margin-top: 32px;
+    background: #f8f3ee;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(138, 90, 68, 0.10);
+    border-collapse: separate;
+    border-spacing: 0 12px;
+    table-layout: fixed;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Estilos para celdas y cabeceras de la tabla */
+.table th,
+.table td {
+    padding: 16px;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.table th {
+    background: linear-gradient(90deg, #8A5A44 0%, #C09F77 100%);
+    color: #fff;
+    font-weight: 700;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.table td {
+    background: #f8f3ee;
+    color: #5D3A21;
+    border: none;
+}
+
+.table tr:hover td {
+    background: #e9e4df;
+    color: #8A5A44;
+}
+
+/* Botones en la tabla */
+.table td a {
+    margin: 0 6px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.2s;
+}
+
+.table .btn-sm {
+    font-size: 18px;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    transition: background 0.2s;
+}
+
+.table .btn-primary {
+    background: #8A5A44;
+    border: none;
+}
+
+.table .btn-primary:hover {
+    background: #6A4E23;
+}
+
+.table .btn-danger {
+    background: #c62828;
+    border: none;
+}
+
+.table .btn-danger:hover {
+    background: #b71c1c;
+}
+
+.table .btn-warning {
+    background: #f0ad4e;
+    border: none;
+}
+
+.table .btn-warning:hover {
+    background: #ec971f;
+}
+
+/* Ajuste de ancho de columnas en la tabla */
+.table th:nth-child(1),
+.table td:nth-child(1) {
+    width: 27%;
+    /* Ajusta el ancho de la columna "Nombre Completo" */
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+    width: 10%;
+    /* Ajusta el ancho de la columna "Grado" */
+}
+
+.table th:nth-child(3),
+.table td:nth-child(3) {
+    width: 12%;
+    /* Ajusta el ancho de la columna "Sección" */
+}
+
+.table th:nth-child(4),
+.table td:nth-child(4) {
+    width: 15%;
+    /* Ajusta el ancho de la columna "Estado" */
+}
+
+.table th:nth-child(5),
+.table td:nth-child(5) {
+    width: 10%;
+    /* Ajusta el ancho de la columna "Tipo de Personal" */
+}
+
+.table th:nth-child(6),
+.table td:nth-child(6) {
+    width: 15%;
+    /* Ajusta el ancho de la columna "Tipo de Personal" */
+}
+
+.table th:nth-child(7),
+.table td:nth-child(7) {
+    width: 10%;
+    /* Ajusta el ancho de la columna "Tipo de Personal" */
+}
+
+.filtros-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: nowrap;
+    /* No rompe la fila */
+    width: 100%;
+}
+
+/* Anchos específicos */
+#buscarAsistencia {
+    width: 360px;
+    /* Más ancho que los demás */
+}
+
+#tipoPersonalSelect {
+    width: 270px;
+    /* Mediano */
+}
+
+#gradoSelect {
+    width: 90px;
+    /* Pequeños */
+}
+
+#seccionSelect {
+    width: 110px;
+    /* Pequeños */
+}
+
+#fechaFiltro {
+    width: 150px;
+    ;
+    /* Mediano/fijo */
+}
+
+/* Botón buscar */
+.filtros-container button {
+    width: 60px;;
+    /* Tamaño fijo */
+    height: 42px;
+    padding: 0 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    background-color: #8A5A44;
+    color: #fff;
+    border: none;
+    transition: background 0.2s;
+}
+
+.filtros-container button:hover {
+    background-color: #6A4E23;
+}
+
+/* Estilo general de inputs y selects */
+.filtros-container input,
+.filtros-container select {
+    height: 42px;
+    padding: 6px 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: border 0.2s, box-shadow 0.2s;
+}
